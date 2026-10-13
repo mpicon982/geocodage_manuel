@@ -49,6 +49,7 @@ with pros as (select
                   regexp_substr(coordonnees_voie, '^\d+')::text                                                numero,
                   --regexp pour choper le bis ter quater -->  pattern match, départ au caractère 1, premier caractère qui matche,
                   --isnensible à la casse  'i', résultat dans  le premier groupe entre()
+  -- source checkée, que des BIS en majuscules ici d'où ùon simple \d+[a-z]
                   case when regexp_substr(coordonnees_voie, '^\d+([a-z])*', 1, 1, 'i', 1) = 'B' then 'bis' end rep,
                   regexp_replace(regexp_replace(replace(replace(unaccent(lower(coordonnees_voie) || ' ' ||
                                                                          coordonnees_code_postal || ' ' ||
@@ -88,7 +89,7 @@ with pros as (select
                               left join ban b
                                         on similarity(b.adresse_geocodage, p.adresse_pros) >= 0.7 and
                                            b.numero = p.numero
-                                            --match des bis ter etc. -- similar to pour gérer les null
+                                            --match des bis ter etc. -- similar to pour gérer les null 
                                             and (b.rep is not distinct from p.rep or
                                                  left(p.rep, 1) is not distinct from b.rep)
 
