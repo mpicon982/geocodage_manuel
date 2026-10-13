@@ -178,8 +178,8 @@ with pros as (select
          from qpv.limites_qpv qpv
                   join table_geocodee_vand tgv on st_intersects(st_point(tgv.x, tgv.y, 2154), qpv.geom)
          where code_qp = 'QN05416M'),
---max 28 points au même endroit --> 2pi/27
---rotation tous les 2pi/27 rad + translation de 4m des doublons
+--max 28 points au même endroit --> 2pi/27 (n-1 car le premier point est fixe)
+--rotation tous les 2pi/(n-1) rad + translation de 4m des doublons
      dedoublonnage_geom as (select tdg.specialite_libelle,
                                    case when i > 1 then x + 4.0 * cos(2.0 * pi() * i / (n-1)::numeric) else x end x,
                                    case when i > 1 then y + 4.0 * sin(2.0 * pi() * i / (n-1)::numeric) else y end y,
