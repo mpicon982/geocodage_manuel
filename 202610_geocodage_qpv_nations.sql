@@ -109,7 +109,7 @@ with pros as (select
                      from ban.ban54_2026 b
                      where code_postal = '54500'
                      --comptage du nombre de numéros de rues par voie dans le fenêtrage
-                     window w as (partition by nom_voie order by numero)
+                     window w as (partition by nom_voie order by numero::int)
                      ),
 
      second_tri as (select pt.adresse_pros,
